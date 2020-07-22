@@ -75,3 +75,24 @@
   /></label>
   <button type="submit">Add New Movie</button>
 </form>
+
+<script>
+  async function handleSubmit(event) {
+    event.preventDefault()
+
+    const data = new FormData(event.target)
+    const result = await fetch('/.netlify/functions/add-movie', {
+      method: 'POST',
+      body: JSON.stringify({
+        id: data.get('id'),
+        title: data.get('title'),
+        tagline: data.get('tagline'),
+        poster: data.get('poster'),
+      })
+    }).then(res => {
+      document.querySelector('.message').innerText = `Response: ${res.status}`
+    })
+  }
+
+  document.querySelector('#add-movie').addEventListener('submit', handleSubmit)
+</script>
